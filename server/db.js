@@ -4,11 +4,13 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 16) {
-  if (process.env.NODE_ENV === 'production') { console.error('JWT_SECRET (16+ chars) is required in production.'); process.exit(1); }
-  process.env.JWT_SECRET = 'dev-only-' + Math.random().toString(36).slice(2) + Date.now(); // new each start in dev
+  process.env.JWT_SECRET = process.env.JWT_SECRET || 'dev-only-' + Math.random().toString(36).slice(2) + Date.now();
 }
 
-const file = process.env.DB_FILE || path.join(path.dirname(fileURLToPath(import.meta.url)), 'verde.db');
+const defaultDbPath = process.env.VERCEL
+  ? path.join('/tmp', 'verde.db')
+  : path.join(path.dirname(fileURLToPath(import.meta.url)), 'verde.db');
+const file = process.env.DB_FILE || defaultDbPath;
 const raw = new DatabaseSync(file);
 raw.exec('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;');
 

@@ -8,7 +8,13 @@ export function ToastProvider({ children }) {
   return <Toast.Provider value={show}>{children}{m && <div className={`toast${m.err ? ' err' : ''}`} role="status">{m.text}</div>}</Toast.Provider>;
 }
 export const Stars = ({ n }) => <span aria-label={`${n} of 5`} className="stars">{'★'.repeat(Math.round(n))}{'☆'.repeat(5 - Math.round(n))}</span>;
-export const Photo = ({ src, alt = '', className = '' }) => <img className={`ph ${className}`} src={src || asset('hero.jpg')} alt={alt} loading="lazy" onError={(e) => { e.currentTarget.src = asset('hero.jpg'); }} />;
+const resolveImg = (src) => {
+  if (!src) return asset('hero.jpg');
+  if (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('data:')) return src;
+  const clean = src.startsWith('/') ? src.slice(1) : src;
+  return asset(clean);
+};
+export const Photo = ({ src, alt = '', className = '' }) => <img className={`ph ${className}`} src={resolveImg(src)} alt={alt} loading="lazy" onError={(e) => { e.currentTarget.src = asset('hero.jpg'); }} />;
 const defaultServiceImages = {
   'women:hair': asset('img/svc-women-cut.jpg'),
   'women:colour': asset('img/svc-women-colour.jpg'),

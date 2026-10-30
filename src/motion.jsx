@@ -30,12 +30,19 @@ export function useScrolled() {
 }
 
 // Drag to compare. A transparent range input sits on top, so mouse, touch and keyboard all work.
+const resolveImg = (src) => {
+  if (!src) return `${import.meta.env.BASE_URL}hero.jpg`;
+  if (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('data:')) return src;
+  const clean = src.startsWith('/') ? src.slice(1) : src;
+  return `${import.meta.env.BASE_URL}${clean}`;
+};
+
 export function BeforeAfter({ before, after, title, by }) {
   const [p, setP] = useState(55);
   return <figure className="ba" style={{ margin: 0 }}>
     <div className="ba-stage">
-      <img src={after} alt={`${title}: after`} draggable="false" />
-      <img src={before} alt={`${title}: before`} draggable="false" className="ba-before" style={{ clipPath: `inset(0 ${100 - p}% 0 0)` }} />
+      <img src={resolveImg(after)} alt={`${title}: after`} draggable="false" />
+      <img src={resolveImg(before)} alt={`${title}: before`} draggable="false" className="ba-before" style={{ clipPath: `inset(0 ${100 - p}% 0 0)` }} />
       <span className="ba-tag l">Before</span><span className="ba-tag r">After</span>
       <span className="ba-line" style={{ left: `${p}%` }}><span className="ba-knob">‹ ›</span></span>
       <input type="range" min="0" max="100" value={p} onChange={(e) => setP(Number(e.target.value))} aria-label={`Drag to compare before and after: ${title}`} />

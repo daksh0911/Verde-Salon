@@ -1,0 +1,2 @@
+{ "name": "Verdé Salon", "short_name": "Verdé", "description": "Book unhurried hair, colour, skin and bridal appointments in Ahmedabad.", "start_url": "/", "display": "standalone", "background_color": "#0F2A22", "theme_color": "#0F2A22",
+  "icons": [{ "src": "/img/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }] }

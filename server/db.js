@@ -7,12 +7,24 @@ if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 16) {
   process.env.JWT_SECRET = process.env.JWT_SECRET || 'dev-only-' + Math.random().toString(36).slice(2) + Date.now();
 }
 
-const defaultDbPath = process.env.VERCEL
-  ? path.join('/tmp', 'verde.db')
-  : path.join(path.dirname(fileURLToPath(import.meta.url)), 'verde.db');
-const file = process.env.DB_FILE || defaultDbPath;
-const raw = new DatabaseSync(file);
-raw.exec('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;');
+let raw;
+const isVercel = !!process.env.VERCEL;
+
+if (isVercel) {
+  try {
+    const tmpFile = path.join('/tmp', 'verde.db');
+    raw = new DatabaseSync(tmpFile);
+    raw.exec('PRAGMA foreign_keys = ON;');
+  } catch (err) {
+    console.warn('Fallback to in-memory SQLite on Vercel:', err.message);
+    raw = new DatabaseSync(':memory:');
+    raw.exec('PRAGMA foreign_keys = ON;');
+  }
+} else {
+  const file = process.env.DB_FILE || path.join(path.dirname(fileURLToPath(import.meta.url)), 'verde.db');
+  raw = new DatabaseSync(file);
+  raw.exec('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;');
+}
 
 // Thin wrapper: prepare().get/all/run/pluck + transaction(), so route code stays short.
 let depth = 0;

@@ -10,13 +10,19 @@ export function Layout() {
   const { pathname } = useLocation(), scrolled = useScrolled(); useReveal(pathname); // drawer closes on navigation
   const mine = user && [[home(user), { customer: 'visits', staff: 'portal' }[user.role] || 'desk'], ...(user.role === 'customer' ? [['/rewards', 'rewards']] : [])];
   return <>
-    <header className={`top${open ? ' open' : ''}${scrolled ? ' scrolled' : ''}`} onClick={() => open && setOpen(false)}><div className="wrap">
-      <Link to="/" className="brand">Verdé</Link>
-      <button className="btn ghost sm burger" aria-expanded={open} onClick={(e) => { e.stopPropagation(); setOpen(!open); }}>{open ? 'Close' : 'Menu'}</button>
-      <nav aria-label="Main">{[...NAV, ...(mine || [])].map(([to, k]) => <NavLink key={to} to={to}>{t(k)}</NavLink>)}</nav>
-      <div className="acts">
-        {user ? <button className="btn ghost sm" onClick={logout}>{t('out')}</button> : <Link className="btn ghost sm" to="/login">{t('login')}</Link>}
-        {(!user || user.role === 'customer') && <Link className="btn sm" to="/book">{t('book')}</Link>}
+    <header className={`top${open ? ' open' : ''}${scrolled ? ' scrolled' : ''}`}><div className="wrap">
+      <div className="bar">
+        <Link to="/" className="brand" onClick={() => setOpen(false)}>Verdé</Link>
+        <button className="btn ghost sm burger" aria-expanded={open} aria-label={open ? 'Close menu' : 'Open menu'} onClick={() => setOpen(!open)}>
+          {open ? '✕ Close' : '☰ Menu'}
+        </button>
+      </div>
+      <div className="nav-panel">
+        <nav aria-label="Main">{[...NAV, ...(mine || [])].map(([to, k]) => <NavLink key={to} to={to} onClick={() => setOpen(false)}>{t(k)}</NavLink>)}</nav>
+        <div className="acts">
+          {user ? <button className="btn ghost sm" onClick={() => { logout(); setOpen(false); }}>{t('out')}</button> : <Link className="btn ghost sm" to="/login" onClick={() => setOpen(false)}>{t('login')}</Link>}
+          {(!user || user.role === 'customer') && <Link className="btn sm" to="/book" onClick={() => setOpen(false)}>{t('book')}</Link>}
+        </div>
       </div>
     </div></header>
     <main key={pathname} className="page-in"><Outlet /></main>

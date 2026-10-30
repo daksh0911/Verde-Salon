@@ -171,31 +171,54 @@ footer { padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)); }
   
   /* Fullscreen Modal Mobile Menu */
   header.open {
-    position: fixed; inset: 0; z-index: 100;
-    height: 100dvh; max-height: 100dvh;
-    background: #0B221B;
-    overflow-y: auto; overscroll-behavior: contain;
-    padding: calc(14px + env(safe-area-inset-top, 0px)) 0 calc(24px + env(safe-area-inset-bottom, 0px));
+    position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+    z-index: 100 !important; width: 100vw !important; height: 100dvh !important; max-height: 100dvh !important;
+    background: #0B221B !important;
+    overflow-y: auto !important; overscroll-behavior: contain;
+    padding: calc(16px + env(safe-area-inset-top, 0px)) 0 calc(24px + env(safe-area-inset-bottom, 0px)) !important;
+    border: none !important;
   }
-  header.open .wrap { height: 100%; display: flex; flex-direction: column; }
+  header.open .wrap {
+    height: 100% !important; min-height: 100% !important;
+    display: flex !important; flex-direction: column !important; justify-content: space-between !important;
+    padding-left: max(20px, env(safe-area-inset-left)) !important;
+    padding-right: max(20px, env(safe-area-inset-right)) !important;
+  }
+  header.open .bar {
+    display: flex !important; align-items: center !important; justify-content: space-between !important;
+    width: 100% !important; flex-shrink: 0 !important; padding-bottom: 8px !important;
+  }
   header.open .nav-panel {
-    display: flex; flex-direction: column; flex: 1; justify-content: space-between;
-    width: 100%; margin-top: 24px; padding-top: 10px;
+    display: flex !important; flex-direction: column !important; flex: 1 1 auto !important;
+    justify-content: space-between !important; width: 100% !important;
+    margin-top: 16px !important; padding-top: 0 !important; border: none !important;
     animation: fadeIn .25s ease-out;
   }
-  header.open nav { flex-direction: column; gap: 0; width: 100%; }
+  header.open nav {
+    display: flex !important; flex-direction: column !important; gap: 0 !important;
+    width: 100% !important; margin-top: 10px !important;
+  }
   header.open nav a {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 18px 4px; font-size: 16px; font-weight: 500; letter-spacing: .15em;
-    color: var(--ink); border-bottom: 1px solid rgba(201,166,107,.18);
+    display: flex !important; align-items: center !important; justify-content: space-between !important;
+    width: 100% !important; box-sizing: border-box !important;
+    padding: 20px 4px !important; font-size: 17px !important; font-weight: 500 !important;
+    letter-spacing: .16em !important; text-transform: uppercase !important;
+    color: var(--ink) !important; text-align: left !important;
+    border: none !important; border-bottom: 1px solid rgba(201,166,107,.2) !important;
   }
-  header.open nav a::after { content: '→'; font-size: 18px; color: var(--brass); opacity: .7; }
-  header.open nav a:hover, header.open nav a.active { color: var(--brass); box-shadow: none; }
+  header.open nav a::after {
+    content: '→' !important; display: inline-block !important;
+    font-size: 20px !important; color: var(--brass) !important; opacity: .8 !important;
+  }
+  header.open nav a:hover, header.open nav a.active {
+    color: var(--brass) !important; box-shadow: none !important;
+  }
   header.open .acts {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-    margin-top: auto; padding-top: 32px; width: 100%;
+    display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 12px !important;
+    margin-top: auto !important; padding-top: 28px !important; padding-bottom: 8px !important;
+    width: 100% !important; flex-shrink: 0 !important;
   }
-  header.open .acts .btn { width: 100%; text-align: center; font-size: 14px; }
+  header.open .acts .btn { width: 100% !important; text-align: center !important; font-size: 14px !important; }
 }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
 @media (max-width: 700px) {

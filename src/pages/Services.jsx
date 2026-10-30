@@ -28,39 +28,42 @@ export default function Services() {
         Tailored luxury grooming and styling rituals meticulously designed for both men and women.
       </p>
 
-      {/* Gender Switcher */}
-      <div style={{ display: 'flex', gap: 12, margin: '28px 0 16px', flexWrap: 'wrap' }}>
-        <button
-          className={`btn ${activeGender === 'all' ? '' : 'ghost'}`}
-          onClick={() => setActiveGender('all')}
-        >
-          All Offerings
-        </button>
-        <button
-          className={`btn ${activeGender === 'women' ? '' : 'ghost'}`}
-          onClick={() => setActiveGender('women')}
-        >
-          Women’s Rituals (6)
-        </button>
-        <button
-          className={`btn ${activeGender === 'men' ? '' : 'ghost'}`}
-          onClick={() => setActiveGender('men')}
-        >
-          Men’s Grooming (6)
-        </button>
-      </div>
-
-      {/* Category Filter Chips */}
-      <div className="chips" style={{ marginBottom: 32 }}>
-        {cats.map((c) => (
+      {/* Modern Filter Toolbar */}
+      <div className="filter-toolbar">
+        {/* Gender Segmented Switcher */}
+        <div className="segmented-control" role="tablist" aria-label="Audience filter">
           <button
-            key={c}
-            className={`chip${cat === c ? ' on' : ''}`}
-            onClick={() => setCat(c)}
+            className={`seg-btn ${activeGender === 'all' ? 'active' : ''}`}
+            onClick={() => setActiveGender('all')}
           >
-            {c}
+            All Offerings
           </button>
-        ))}
+          <button
+            className={`seg-btn ${activeGender === 'women' ? 'active' : ''}`}
+            onClick={() => setActiveGender('women')}
+          >
+            Women (6)
+          </button>
+          <button
+            className={`seg-btn ${activeGender === 'men' ? 'active' : ''}`}
+            onClick={() => setActiveGender('men')}
+          >
+            Men (6)
+          </button>
+        </div>
+
+        {/* Category Filter Pills */}
+        <div className="category-scroll" role="tablist" aria-label="Category filter">
+          {cats.map((c) => (
+            <button
+              key={c}
+              className={`cat-pill ${cat === c ? 'active' : ''}`}
+              onClick={() => setCat(c)}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Render sections depending on active filter */}
